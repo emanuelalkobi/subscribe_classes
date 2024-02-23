@@ -116,6 +116,5 @@ for class_idx,class_info in enumerate(register):
         print("registered successfullyo to the class")
         print("here2")
         sleep(5)
-        break
 
 
