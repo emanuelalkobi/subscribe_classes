@@ -113,4 +113,5 @@ for class_idx,class_info in enumerate(register):
         log("registered successfullyo to the class")
         sleep(5)
 
-
+log("Close Chrome driver")
+driver.close()
