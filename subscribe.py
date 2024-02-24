@@ -6,12 +6,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from time import sleep
 from datetime import datetime
+import http.client as httplib
 
 URL_GRAND_KENYON_HAIFA="https://www.holmesplace.co.il/place-studio/?club=202"
 CLASS="ספינינג"
 PREF_SEATS =[39, 36, 35, 38, 27]
 DATE=datetime.now()
 LOG_PATH="/tmp/subscribe_log_%s.txt"%DATE
+
+
+def check_internet(url="www.google.com", timeout=3):
+    connection = httplib.HTTPConnection(url, timeout=timeout)
+    try:
+        connection.request("HEAD", "/")
+        connection.close()  # connection closed
+        return True
+    except Exception as exep:
+        log(exep)
+        return False
 
 def log(text):
     text_file = open(LOG_PATH, "a")
@@ -35,6 +47,9 @@ parser.add_argument('-p','--password', help='password to access account', requir
 args = parser.parse_args()
 
 log("Script starts to run at %s, subscribe to %s. Logs are located at %s"%(datetime.now(), CLASS, LOG_PATH)) 
+if (not check_internet()):
+    log("There is no internet connection, script can't run.")
+
 options = webdriver.ChromeOptions() 
 options.add_argument("--start-maximized") 
 options.add_argument('--log-level=3')
